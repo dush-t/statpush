@@ -1,0 +1,5 @@
+venv
+send_to_controller.p4
+*.pyc
+.vscode
+monitor.json
