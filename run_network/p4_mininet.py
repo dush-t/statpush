@@ -22,6 +22,8 @@ import os
 import tempfile
 import socket
 
+SWITCH_START_TIMEOUT = 10 # seconds
+
 class P4Host(Host):
     def config(self, **params):
         r = super(P4Host, self).config(**params)

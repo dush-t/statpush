@@ -35,14 +35,6 @@ class Topology(Topo):
                                 mac = "00:04:00:00:00:%02x" % h)
             info("Adding host %s\n" % str(host))
             self.addLink(host, switch)
-
-        # Adding the controller
-        # con_node = self.addHost("sw-cpu", cls=LinuxBridge, dpid='1000000000000000')
-        # con_node = self.addHost('con',
-        #                         ip = "10.1.1.10/24",
-        #                         mac = "00:05:00:00:00:00")
-        # self.addLink(switch, con_node, intfName1='s1-cpu-eth0', intfName2='s1-cpu-eth1')
-        # self.addLink(con_node, switch)
     
         info('Topology set up\n')
 
