@@ -3,3 +3,4 @@ send_to_controller.p4
 *.pyc
 .vscode
 monitor.json
+rpc_controller/rpc_controller
