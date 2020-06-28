@@ -1,5 +1,5 @@
 # statpush
-Programming network switches to notify controller about network congestion
+Detecting network congestion in the data plane with P4
 
 ## How to run
 ### Pre-requisites
