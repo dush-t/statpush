@@ -1,8 +1,6 @@
 package client
 
 import (
-	"log"
-
 	p4_v1 "github.com/p4lang/p4runtime/go/p4/v1"
 )
 
@@ -59,8 +57,6 @@ func (m *LpmMatch) get(ID uint32) *p4_v1.FieldMatch {
 func (c *Client) InsertTableEntry(table string, action string, mfs []MatchInterface, params [][]byte) error {
 	tableID := c.tableId(table)
 	actionID := c.actionId(action)
-	log.Println("tableID", tableID)
-	log.Println("actionID", actionID)
 
 	directAction := &p4_v1.Action{
 		ActionId: actionID,
@@ -71,7 +67,6 @@ func (c *Client) InsertTableEntry(table string, action string, mfs []MatchInterf
 			ParamId: uint32(idx + 1),
 			Value:   p,
 		}
-		log.Println("actionParam", p)
 		directAction.Params = append(directAction.Params, param)
 	}
 

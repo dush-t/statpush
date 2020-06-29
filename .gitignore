@@ -4,3 +4,4 @@ send_to_controller.p4
 .vscode
 monitor.json
 rpc_controller/rpc_controller
+receiveDigests.go

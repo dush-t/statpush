@@ -37,6 +37,7 @@ class P4RuntimeSwitch(P4Switch):
                  verbose = False,
                  device_id = None,
                  enable_debugger = False,
+                 notifications_addr = None,
                  log_file = None,
                  **kwargs):
         Switch.__init__(self, name, **kwargs)
@@ -65,6 +66,9 @@ class P4RuntimeSwitch(P4Switch):
         else:
             self.thrift_port = P4RuntimeSwitch.next_thrift_port
             P4RuntimeSwitch.next_thrift_port += 1
+
+        if notifications_addr is not None:
+            self.notifications_addr = notifications_addr
 
         # if check_listening_on_port(self.grpc_port):
         #     error('%s cannot bind port %d because it is bound by another process\n' % (self.name, self.grpc_port))
@@ -118,10 +122,12 @@ class P4RuntimeSwitch(P4Switch):
             args.append("--debugger")
         if self.log_console:
             args.append("--log-console")
-        if self.thrift_port:
-            args.append('--thrift-port ' + str(self.thrift_port))
+        # if self.thrift_port:
+        #     args.append('--thrift-port ' + str(self.thrift_port))
         if self.grpc_port:
             args.append("-- --grpc-server-addr 0.0.0.0:" + str(self.grpc_port))
+        if self.notifications_addr:
+            args.extend(['--notifications-addr', str(self.notifications_addr)])
         cmd = ' '.join(args)
         info(cmd + "\n")
 

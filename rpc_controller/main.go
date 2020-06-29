@@ -4,7 +4,6 @@ import (
 	"context"
 	"flag"
 	"log"
-	"time"
 
 	"google.golang.org/grpc"
 
@@ -50,41 +49,15 @@ func main() {
 	electionId := p4_v1.Uint128{High: 0, Low: 1}
 
 	p4RtC := client.NewClient(c, defaultDeviceID, electionId)
-	mastershipCh := make(chan bool)
-	go p4RtC.Run(stopCh, mastershipCh)
+	startedCh := make(chan bool)
+	go p4RtC.Run(stopCh, startedCh, binPath, p4InfoPath)
 
-	waitCh := make(chan struct{})
+	// Wait for the client to finish starting up before performing
+	// any read or write operations
+	<-startedCh
 
-	go func() {
-		sent := false
-		for isMaster := range mastershipCh {
-			if isMaster {
-				log.Println("We are master!")
-				if !sent {
-					waitCh <- struct{}{}
-					sent = true
-				}
-			} else {
-				log.Println("We are not master!")
-			}
-		}
-	}()
-
-	timeout := 5 * time.Second
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
-	defer cancel()
-	select {
-	case <-ctx.Done():
-		log.Fatal("Could not acquire mastership within timeout")
-	case <-waitCh:
-	}
-
-	log.Println("Setting forwarding pipe")
-	if err := p4RtC.SetFwdPipe(binPath, p4InfoPath); err != nil {
-		log.Fatal("Error setting forwarding pipe", err)
-	}
-
-	Setup(p4RtC)
+	SetupSwitch(p4RtC)
+	ListenToStreamMessages(p4RtC)
 
 	log.Println("Press Ctrl-C to quit")
 	<-stopCh

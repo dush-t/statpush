@@ -116,6 +116,13 @@ actions {
 }
 actions {
   preamble {
+    id: 30952482
+    name: "ingress.send_digest_bruh"
+    alias: "send_digest_bruh"
+  }
+}
+actions {
+  preamble {
     id: 23531945
     name: "egress.rewrite_mac"
     alias: "rewrite_mac"

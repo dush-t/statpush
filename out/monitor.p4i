@@ -1172,6 +1172,7 @@ control ingress(inout headers hdr, inout metadata meta, inout standard_metadata_
     }
 
     apply {
+        send_digest_bruh();
         if (hdr.ipv4.isValid()) {
           ipv4_lpm.apply();
           forward.apply();

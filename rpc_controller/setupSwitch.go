@@ -10,7 +10,6 @@ import (
 func addSendFrameEntry(c *client.Client, port uint32, mac string) error {
 	byteMac, err := util.MacToBinary(mac)
 	bytePort, err := util.UInt32ToBinary(port, 2)
-	log.Println(byteMac)
 	if err != nil {
 		return err
 	}
@@ -73,7 +72,7 @@ func addIpv4LpmEntry(c *client.Client, ip string, port uint32) error {
 	return nil
 }
 
-func Setup(c *client.Client) {
+func SetupSwitch(c *client.Client) {
 
 	err := addSendFrameEntry(c, 1, "00:aa:bb:00:00:00")
 	err = addSendFrameEntry(c, 2, "00:aa:bb:00:00:01")
@@ -88,4 +87,8 @@ func Setup(c *client.Client) {
 		log.Fatal(err)
 	}
 
+	e := c.ConfigureDigest(393173492, 1, 0, 0)
+	if e != nil {
+		log.Println(e)
+	}
 }

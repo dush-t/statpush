@@ -23,7 +23,7 @@ class Topology(Topo):
                                 json_path = json_path,
                                 log_console = True,
                                 log_file = log_file,
-                                thrift_port = thrift_port,
+                                thrift_port = None,
                                 enable_debugger = False,
                                 pcap_dump = pcap_dump,
                                 notifications_addr = notifications_addr)
