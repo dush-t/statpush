@@ -116,9 +116,9 @@ actions {
 }
 actions {
   preamble {
-    id: 30952482
-    name: "ingress.send_digest_bruh"
-    alias: "send_digest_bruh"
+    id: 23875465
+    name: "ingress.notify_controller"
+    alias: "notify_controller"
   }
 }
 actions {
@@ -138,20 +138,6 @@ actions {
     id: 25850727
     name: "egress._drop"
     alias: "egress._drop"
-  }
-}
-actions {
-  preamble {
-    id: 32184339
-    name: "egress.send_digest"
-    alias: "send_digest"
-  }
-}
-actions {
-  preamble {
-    id: 32008975
-    name: "egress.notify_controller"
-    alias: "notify_controller"
   }
 }
 controller_packet_metadata {
@@ -179,8 +165,8 @@ controller_packet_metadata {
 }
 registers {
   preamble {
-    id: 372051018
-    name: "egress.state"
+    id: 381083224
+    name: "ingress.state"
     alias: "state"
   }
   type_spec {
@@ -194,8 +180,8 @@ registers {
 }
 registers {
   preamble {
-    id: 370067224
-    name: "egress.timestamps"
+    id: 383443579
+    name: "ingress.timestamps"
     alias: "timestamps"
   }
   type_spec {
