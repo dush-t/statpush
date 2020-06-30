@@ -17,8 +17,8 @@ func ListenToStreamMessages(c *client.Client) {
 			c.PushStreamMessages <- request
 			in := <-c.PullStreamMessages
 
-			log.Println(in)
 			update := in.GetUpdate()
+
 			switch update.(type) {
 			case *p4_v1.StreamMessageResponse_Arbitration:
 				HandleArbitration(in.GetArbitration())
@@ -33,7 +33,38 @@ func ListenToStreamMessages(c *client.Client) {
 
 // HandleDigest will handle the digest message
 func HandleDigest(digest *p4_v1.DigestList) {
-	log.Println("Received digest message")
+	messages := digest.GetData()
+
+	var queueLen, timestamp []byte
+	// var queueLen uint32
+	// var timestamp uint64
+	var conState uint
+
+	for _, members := range messages {
+		s := members.GetStruct()
+		if s != nil {
+			m := s.GetMembers()
+			if bit := m[0].GetBitstring(); bit != nil {
+				// queueLen = util.BinaryToUint32(bit)
+				queueLen = bit
+			}
+			if bit := m[1].GetBitstring(); bit != nil {
+				conState = uint(bit[0])
+			}
+			if bit := m[2].GetBitstring(); bit != nil {
+				timestamp = bit
+				// timestamp = util.Binary48ToInt64(bit)
+			}
+		}
+	}
+	if conState == 1 {
+		log.Println("Congestion started")
+	} else if conState == 0 {
+		log.Println("Congestion ended")
+	}
+	log.Println("queueLen:", queueLen)
+	log.Println("timeStamp:", timestamp)
+	log.Println("###---------------------###")
 }
 
 // HandleArbitration will read the arbitration message and log

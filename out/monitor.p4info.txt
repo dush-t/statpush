@@ -118,7 +118,7 @@ actions {
   preamble {
     id: 23875465
     name: "ingress.notify_controller"
-    alias: "notify_controller"
+    alias: "ingress.notify_controller"
   }
 }
 actions {
@@ -138,6 +138,13 @@ actions {
     id: 25850727
     name: "egress._drop"
     alias: "egress._drop"
+  }
+}
+actions {
+  preamble {
+    id: 32008975
+    name: "egress.notify_controller"
+    alias: "egress.notify_controller"
   }
 }
 controller_packet_metadata {
@@ -165,8 +172,8 @@ controller_packet_metadata {
 }
 registers {
   preamble {
-    id: 381083224
-    name: "ingress.state"
+    id: 372051018
+    name: "egress.state"
     alias: "state"
   }
   type_spec {
@@ -180,8 +187,8 @@ registers {
 }
 registers {
   preamble {
-    id: 383443579
-    name: "ingress.timestamps"
+    id: 370067224
+    name: "egress.timestamps"
     alias: "timestamps"
   }
   type_spec {
@@ -225,6 +232,16 @@ type_info {
           bitstring {
             bit {
               bitwidth: 4
+            }
+          }
+        }
+      }
+      members {
+        name: "timestamp"
+        type_spec {
+          bitstring {
+            bit {
+              bitwidth: 48
             }
           }
         }

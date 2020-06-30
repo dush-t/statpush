@@ -25,7 +25,6 @@ func (c *Client) StartStreamChannel() {
 	go func() {
 		for {
 			in, err := stream.Recv()
-			log.Println("Received a message from stream channel")
 			if err == io.EOF {
 				log.Println("Error receiving message from stream:", err)
 			}
@@ -43,7 +42,6 @@ func (c *Client) StartStreamChannel() {
 	go func() {
 		for {
 			sendmess := <-c.PushStreamMessages
-			log.Println("Sending message to stream channel")
 			mess := sendmess
 			if err := stream.Send(mess); err != nil {
 				log.Println("Unable to send message to stream channel:", err)

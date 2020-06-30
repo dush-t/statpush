@@ -38,6 +38,7 @@ struct con_notif_meta_t {
     // bit<8>  qid;
     bit<32> queue_len;
     bit<4>  con_state;
+    bit<48> timestamp;
     bit<4> _padding;
 }
 
