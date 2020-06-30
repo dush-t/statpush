@@ -48,6 +48,20 @@ This project uses a star topology with *n* hosts, where n can be changed from `r
 
 You'll also need to make some additional changes to the python driver code if you want to run a non-star topology with multiple switches, but it's not quite reasonable to describe all those changes here. You'll need to read and understand all of the driver code (which isn't much, honestly) to be able to change the topology to a multi-switch one.
 
+## Some issues
+
+### Sending digest messages in the egress pipeline
+In the `v1model` PSA architecture, packets are queued after ingress processing. On the other hand, digests messages can be sent to the control plane only during the ingress processing. Thus, simply sending digest messages based on queueing-related metadata is impossible. It's an architecture limitation and there is nothing that can be done to achieve it while using the `v1model` architecture.
+
+However, in this project I have implemented a hacky (and limited) fix. I do all the processing in the egress pipeline, and if I need to send a digest message, I simply recirculate the packet with the appropriate metadata. In the ingress pipeline, I check if the packet is a recirculated one (using it's metadata), and if it is, I send that metadata in a digest message and then drop the packet. This is a rather hacky way to "call" an ingress action from the egress pipeline, but it works.
+
+The issue with this is that sometimes it _does not_ work, and this is because of a [fundamental bug](https://github.com/p4lang/behavioral-model/blob/master/docs/simple_switch.md#restrictions-on-recirculate-resubmit-and-clone-operations) in how `p4c` handles preserving metadata in `v1model` during `recirculate` and `resubmit` operations. Not much I can do about this. 
+
+### BMv2's poor performance
+BMv2 _is not_ a production grade switch. It is for testing purposes only. So when I try to hit it with heavy traffic (think 1GBps), most of the packets are just lost and the logs show that the queue depth never exceeded the threshold. Thus, congestion is _not always_ detected. This failure in congestion detection, however, is not relevant to the scope of the project because in this case the switch itself does not know of congestion (while the project focusses on notifying the controller _once the switch finds out_). I have verified from the switch logs, however, that whenever the switch does detect congestion, it notifies the controll plane.
+
+This should not be a problem in production grade switches which don't just lose packets.
+
 ---
 
 ### Why not just use p4app?
