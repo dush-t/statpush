@@ -1,5 +1,5 @@
 # statpush
-Detecting network congestion in the data plane with P4
+Detecting network congestion in the data plane with P4 and Go
 
 ## How to run
 ### Pre-requisites
