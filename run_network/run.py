@@ -13,16 +13,13 @@ from topology import Topology
 from compile_switch import run_compile_bmv2
 
 
-def configure_switch(switch_config):
+def configure_switch(queue_rate):
     info(' ')
-    info("Reading switch config file")
-    with open(conf.SWITCH_CONFIG, 'r') as config:
-        switch_config = config.read()
 
     info("Configuring switch")
     
     proc = Popen(["simple_switch_CLI"], stdin=PIPE)
-    proc.communicate(input=switch_config)
+    proc.communicate(input="set_queue_rate " + str(queue_rate))
 
     info("Configuration complete")
     info(' ')
@@ -66,7 +63,7 @@ def run():
 
     sleep(1)
 
-    # configure_switch(conf.SWITCH_CONFIG)
+    configure_switch(10)
 
     CLI( net )
     print('hello')

@@ -122,8 +122,8 @@ class P4RuntimeSwitch(P4Switch):
             args.append("--debugger")
         if self.log_console:
             args.append("--log-console")
-        # if self.thrift_port:
-        #     args.append('--thrift-port ' + str(self.thrift_port))
+        if self.thrift_port:
+            args.append('--thrift-port ' + str(self.thrift_port))
         if self.grpc_port:
             args.append("-- --grpc-server-addr 0.0.0.0:" + str(self.grpc_port))
         if self.notifications_addr:

@@ -183,7 +183,7 @@ registers {
       }
     }
   }
-  size: 2
+  size: 6
 }
 registers {
   preamble {
@@ -198,7 +198,7 @@ registers {
       }
     }
   }
-  size: 2
+  size: 6
 }
 digests {
   preamble {

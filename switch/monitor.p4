@@ -22,8 +22,8 @@ control egress(inout headers hdr, inout metadata meta, inout standard_metadata_t
 
     // These registers store information about the current switch
     // state.
-    register<bit<1>>(2) state;
-    register<bit<48>>(2) timestamps;
+    register<bit<1>>(6) state;
+    register<bit<48>>(6) timestamps;
 
     action rewrite_mac(bit<48> smac) {
         hdr.ethernet.srcAddr = smac;
@@ -76,6 +76,11 @@ control egress(inout headers hdr, inout metadata meta, inout standard_metadata_t
         if (hdr.ipv4.isValid()) {
           send_frame.apply();
         }
+
+        // Decide what state to read from, based on the queue.
+        // bit<32> port = (bit<32>) standard_metadata.ingress_port;
+        // bit<32> firstIndex = (port - 1) * 2;
+        // bit<32> secondIndex = firstIndex + 1;
 
         bit<1> con;
         bit<1> qle;
