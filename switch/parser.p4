@@ -1,4 +1,7 @@
-parser ParserImpl(packet_in packet, out headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
+parser ParserImpl(packet_in packet,
+                  out headers hdr, 
+                  inout metadata meta, 
+                  inout standard_metadata_t standard_metadata) {
     state parse_ethernet {
         packet.extract(hdr.ethernet);
         transition select(hdr.ethernet.etherType) {
